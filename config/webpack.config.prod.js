@@ -1,7 +1,7 @@
-const webpackMerge = require('webpack-merge')
-const terserWebpackPlugin = require('terser-webpack-plugin')
+const webpackMerge = require('webpack-merge');
+const terserWebpackPlugin = require('terser-webpack-plugin');
 
-const baseConfig = require('./webpack.config.base')
+const baseConfig = require('./webpack.config.base');
 
 const webpackProdConfig = webpackMerge(baseConfig, {
   mode: 'production',
@@ -34,9 +34,10 @@ const webpackProdConfig = webpackMerge(baseConfig, {
           mangle: true,
         },
         parallel: true,
+        sourceMap: false,
       }),
     ],
   },
-})
+});
 
-module.exports = webpackProdConfig
+module.exports = webpackProdConfig;

@@ -17,7 +17,7 @@
     "webpack-node-externals": "^2.5.2"
   },
   "scripts": {
-    "start": "nodemon --exec ./node_modules/.bin/babel-node src/index.js",
+    "start": "npm-run-all -p watch debug",
     "webpack:debug": "node --inspect-brk ./node_modules/.bin/webpack --inline --progress",
     "build": "cross-env NODE_ENV=prod  webpack --config config/webpack.config.prod.js",
     "dev": "cross-env NODE_ENV=development nodemon --exec ./node_modules/.bin/babel-node --inspect ./src/index.js",

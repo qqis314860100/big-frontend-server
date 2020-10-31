@@ -1,4 +1,4 @@
 import combineRoutes from 'koa-combine-routers';
-import demoRouter from './PublicRouter';
+import publicRouter from './PublicRouter';
 
-export default combineRoutes(demoRouter);
+module.exports = combineRoutes(publicRouter);
