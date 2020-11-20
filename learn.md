@@ -33,3 +33,8 @@ SplitChunksPlugin 避免重复依赖
 vscode 调试：launch.json
 chrome 调试："webpack:debug":"node --inspect-brk ./node_modules/.bin/webpack --inline --progress"
 npm-check-updates 检查 npm 依赖包是否有最新版本 命令:ncu
+
+<!-- import koa from koa;
+const app = new koa()
+app.use(middleware)
+app.listen(3000,()=>{}) -->

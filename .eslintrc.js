@@ -1,28 +1,21 @@
 module.exports = {
-  root: true,
   env: {
-    node: true
+    es6: true,
+    node: true,
   },
-  extends: ["plugin:vue/essential", "@vue/standard"],
+  extends: ['eslint:recommended', 'standard'],
+  globals: {
+    Atomics: 'readonly',
+    SharedArrayBuffer: 'readonly',
+  },
   parserOptions: {
-    parser: "babel-eslint"
+    ecmaVersion: 2018,
+    sourceType: 'module',
   },
   rules: {
-    "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
-    "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
-    quotes: ["error", "single"],
-    //强制不使用分号结尾
-    semi: ["error", "nerve"]
+    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'require-atomic-updates': 'off',
+    'prefer-const': 'off',
   },
-  overrides: [
-    {
-      files: [
-        "**/__tests__/*.{j,t}s?(x)",
-        "**/tests/unit/**/*.spec.{j,t}s?(x)"
-      ],
-      env: {
-        mocha: true
-      }
-    }
-  ]
 };
