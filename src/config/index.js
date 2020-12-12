@@ -6,7 +6,7 @@ const REDIS = {
   password: '123456',
 }
 
-// shuangshuangda
+// shuangshuangda 密钥
 const JWT_SECRET = 'LDaTIKuFKwFWASsFwsXw90DFAxZ6ADb4KWVMWXUAbeE'
 
 export { DB_URL, REDIS, JWT_SECRET }

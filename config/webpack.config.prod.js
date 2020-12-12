@@ -1,12 +1,33 @@
-const webpackMerge = require('webpack-merge');
-const terserWebpackPlugin = require('terser-webpack-plugin');
+const webpackMerge = require('webpack-merge')
+const baseWebpackConfig = require('./webpack.config.base')
 
-const baseConfig = require('./webpack.config.base');
+const TerserWebpackPlugin = require('terser-webpack-plugin')
 
-const webpackProdConfig = webpackMerge(baseConfig, {
+const webpackConfig = webpackMerge(baseWebpackConfig, {
   mode: 'production',
   stats: { children: false, warnings: false },
   optimization: {
+    minimizer: [
+      new TerserWebpackPlugin({
+        terserOptions: {
+          warnings: false,
+          compress: {
+            warnings: false,
+            // 是否注释掉console
+            drop_console: false,
+            dead_code: true,
+            drop_debugger: true,
+          },
+          output: {
+            comments: false,
+            beautify: false,
+          },
+          mangle: true,
+        },
+        parallel: true,
+        sourceMap: false,
+      }),
+    ],
     splitChunks: {
       cacheGroups: {
         commons: {
@@ -17,27 +38,7 @@ const webpackProdConfig = webpackMerge(baseConfig, {
         },
       },
     },
-    minimizer: [
-      new terserWebpackPlugin({
-        terserOptions: {
-          warnings: false,
-          compress: {
-            warnings: false,
-            drop_console: false,
-            dead_code: true,
-            drop_debugger: true,
-          },
-          output: {
-            comments: false,
-            beautify: false, //一行输出结构
-          },
-          mangle: true,
-        },
-        parallel: true,
-        sourceMap: false,
-      }),
-    ],
   },
-});
+})
 
-module.exports = webpackProdConfig;
+module.exports = webpackConfig

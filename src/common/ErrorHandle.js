@@ -9,8 +9,6 @@ export default (ctx, next) => {
       }
     } else {
       ctx.status = err.status || 500
-      debugger
-
       ctx.body = Object.assign(
         {
           code: 500,

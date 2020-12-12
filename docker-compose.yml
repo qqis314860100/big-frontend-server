@@ -1,0 +1,37 @@
+version: '3'
+services:
+  mongodb:
+    image: mongo:latest
+    restart: always
+    container_name: big_frontend
+    volumes:
+      - /home/data/mongo/db:/data/db
+      - /home/data/mongo/log:/var/log/mongodb
+      - ./init-mongo.sh:/docker-entrypoint-initdb.d/init-mongo.sh # mongo 运行后执行的任务
+    command: [--auth]
+    ports:
+      - 27017:27017
+  redis:
+    image: redis
+    restart: always
+    container_name: redis_test
+    ports:
+      - 15000:6379
+    volumes:
+      - /home/data/redis:/data/redis
+    command: ['redis-server', '--requirepass', '123456']
+  DOClever:
+    image: lw96/doclever:latest
+    restart: always
+    container_name: 'DOClever'
+    ports:
+      - 27117:27117
+    volumes:
+      - /home/data/doclever/file:/root/DOClever/data/file
+      - /home/data/doclever/img:/root/DOClever/data/img
+      - /home/data/doclever/tmp:/root/DOClever/data/tmp
+    environment:
+      - DB_HOST=mongodb://localhost:27017/DOClever
+      - PORT=27117
+    links:
+      - mongo:mongo

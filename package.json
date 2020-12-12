@@ -4,7 +4,9 @@
     "@babel/preset-env": "^7.12.1",
     "@koa/cors": "^3.1.0",
     "babel-loader": "^8.1.0",
+    "bcrypt": "^5.0.0",
     "clean-webpack-plugin": "^3.0.0",
+    "dayjs": "^1.9.6",
     "iscroll": "^5.2.0",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.0",
@@ -21,6 +23,7 @@
     "redis": "^3.0.2",
     "saslprep": "^1.0.3",
     "svg-captcha": "^1.4.0",
+    "uuid": "^8.3.1",
     "webpack-node-externals": "^2.5.2"
   },
   "scripts": {
@@ -28,11 +31,11 @@
     "webpack:debug": "node --inspect-brk ./node_modules/.bin/webpack --inline --progress",
     "build": "cross-env NODE_ENV=prod  webpack --config config/webpack.config.prod.js",
     "dev": "cross-env NODE_ENV=development nodemon --exec ./node_modules/.bin/babel-node --inspect ./src/index.js",
-    "watch": "cross-env NODE_ENV=development webpack --watch --progress --hide-modules --config config/webpack.config.dev.js",
-    "debug": "cross-env NODE_ENV=development nodemon --inspect=9229 ./dist/server.bundle.js",
+    "watch": "cross-env NODE_ENV=development webpack --watch --progress  --config config/webpack.config.dev.js",
+    "debug": "nodemon --inspect ./dist/server.bundle.js",
     "clean": "rimraf dist",
     "rimraf": "rimraf node_modules",
-    "start:dist": "npm-run-all  -p watch debug"
+    "debugger": "npm-run-all --color -p watch debug"
   },
   "devDependencies": {
     "@babel/node": "^7.12.1",
