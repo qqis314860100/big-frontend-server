@@ -5,6 +5,6 @@ const router = new Router()
 
 router.prefix('/user')
 
-router.get('fav', userController.userSign)
+router.get('/fav', userController.userSign)
 
 export default router

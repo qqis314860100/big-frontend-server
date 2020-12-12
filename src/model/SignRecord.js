@@ -7,7 +7,6 @@ const SignRecordSchema = new Schema({
   uid: { type: String, ref: 'users' },
   created: { type: Date },
   favs: { type: Number }, // 签到积分
-  lastSign: { type: Date }, //最后一次签到日期
 })
 
 // 每当用户保存的时候

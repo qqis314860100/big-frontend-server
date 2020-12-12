@@ -1,10 +1,10 @@
 import { getValue } from '../config/RedisConfig'
-import config from '../config'
+import { JWT_SECRET } from '../config'
 import jwt from 'jsonwebtoken'
 
 // 验证token的有效性
 const getJWTPayload = (token) => {
-  return jwt.verify(token.split(' ')[1], config.JWT_SECRET)
+  return jwt.verify(token.split(' ')[1], JWT_SECRET)
 }
 
 const checkCode = async (key, value) => {
