@@ -13,7 +13,7 @@ module.exports = {
     filename: '[name].bundle.js',
     path: utils.DIST_PATH,
   },
-  resolve: { ...utils.getWebpackResolveConfig },
+  resolve: { ...utils.getWebpackResolveConfig() },
   module: {
     rules: [
       {

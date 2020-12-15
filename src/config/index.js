@@ -9,4 +9,7 @@ const REDIS = {
 // shuangshuangda 密钥
 const JWT_SECRET = 'LDaTIKuFKwFWASsFwsXw90DFAxZ6ADb4KWVMWXUAbeE'
 
-export { DB_URL, REDIS, JWT_SECRET }
+const baseUrl =
+  process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3333'
+
+export { DB_URL, REDIS, JWT_SECRET, baseUrl }

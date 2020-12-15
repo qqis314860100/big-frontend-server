@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer')
+import { baseUrl } from './index'
 
 // async..await is not allowed in global scope, must use a wrapper
 async function send(sendInfo) {
@@ -13,7 +14,7 @@ async function send(sendInfo) {
     secure: false, // true for 465, false for other ports
     auth: {
       user: '314860100@qq.com', // generated ethereal user
-      pass: 'sryehtosyfrebgdh', // generated ethereal password
+      pass: 'wxycidnxbydbbiah', // generated ethereal password
     },
   })
   // let sendInfo = {
@@ -23,7 +24,8 @@ async function send(sendInfo) {
   //   user: 'Wanderer',
   // }
   const route = sendInfo.type === 'email' ? '/confirm' : '/reset'
-  const url = 'http://www.baidu.com'
+
+  const url = `${baseUrl}/#${route}?key=${sendInfo.key}`
 
   // send mail with defined transport oject
   let info = await transporter.sendMail({
@@ -40,8 +42,12 @@ async function send(sendInfo) {
     <div style="border: 1px solid #dcdcdc;color: #676767;width: 600px; margin: 0 auto; padding-bottom: 50px;position: relative;">
     <div style="height: 60px; background: #393d49; line-height: 60px; color: #58a36f; font-size: 18px;padding-left: 10px;">Imooc社区——欢迎来到官方社区</div>
     <div style="padding: 25px">
-      <div>您好，${sendInfo.user}童鞋，重置链接有效时间30分钟，请在${sendInfo.expire}之前${
-      sendInfo.code ? '重置您的密码' : '修改您的邮箱为：' + sendInfo.data.username
+      <div>您好，${sendInfo.user}童鞋，重置链接有效时间30分钟，请在${
+      sendInfo.expire
+    }之前${
+      sendInfo.code
+        ? '重置您的密码'
+        : '修改您的邮箱为：' + sendInfo.data.username
     }：</div>
       <a href="${url}" style="padding: 10px 20px; color: #fff; background: #009e94; display: inline-block;margin: 15px 0;">${
       sendInfo.code ? '立即重置密码' : '确认设置邮箱'

@@ -1,7 +1,13 @@
 import moment from 'dayjs'
+import { send } from '../config/MainConfig'
+import { v4 as uuid } from 'uuid'
 import SignRecord from '../model/SignRecord'
 import { getJWTPayload } from '../common/utils'
 import User from '../model/User'
+import dayjs from 'dayjs'
+import jwt from 'jsonwebtoken'
+import { setValue } from '../config/RedisConfig'
+import { JWT_SECRET } from '../config/index'
 
 class UserController {
   // 用户签到接口
@@ -104,6 +110,50 @@ class UserController {
       lastSign: newRecord.created,
     }
     return
+  }
+
+  // 更新用户基本信息接口
+  async updateUserInfo(ctx) {
+    const { body } = ctx.request
+    const obj = await getJWTPayload(ctx.header.authorization)
+    const user = await User.findOne({ _id: obj._id })
+    const key = uuid()
+    setValue(key, jwt.sign({ _id: obj.id }, JWT_SECRET), 30 * 60 * 1000)
+    if (body.username && body.username !== user.username) {
+      // 用户修改了邮箱
+      // 发送reset邮件
+      const result = await send({
+        type: 'email',
+        key: uuid(),
+        code: '',
+        expire: dayjs().add(30, 'minute').format('YYYY-MM-DD HH:mm:ss'),
+        user: user.name,
+        data: { key, username: body.username }, // receive
+        email: user.username, // to
+      })
+      ctx.body = {
+        code: 500,
+        data: result,
+        msg: '发送验证邮件成功,请点击链接确认修改',
+      }
+    } else {
+      const arr = ['username', 'mobile', 'password']
+      arr.map((item) => {
+        delete body[item]
+      })
+      const result = await User.update({ _id: obj.id }, body)
+      if (result.ok === 1 && result.n === 1) {
+        ctx.body = {
+          code: 200,
+          msg: '更新成功',
+        }
+      } else {
+        ctx.body = {
+          code: 500,
+          msg: '更新失败',
+        }
+      }
+    }
   }
 }
 
