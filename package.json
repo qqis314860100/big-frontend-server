@@ -32,11 +32,11 @@
     "webpack:debug": "node --inspect-brk ./node_modules/.bin/webpack --inline --progress",
     "build": "cross-env NODE_ENV=prod  webpack --config config/webpack.config.prod.js",
     "dev": "cross-env NODE_ENV=development nodemon --exec ./node_modules/.bin/babel-node --inspect ./src/index.js",
-    "watch": "cross-env NODE_ENV=development webpack --watch --progress  --config config/webpack.config.dev.js",
-    "debug": "nodemon --inspect ./dist/server.bundle.js",
+    "watch": "cross-env NODE_ENV=development webpack --watch --progress --hide-modules --config config/webpack.config.dev.js",
+    "debug": "nodemon --inspect=9229 ./dist/server.bundle.js",
     "clean": "rimraf dist",
     "rimraf": "rimraf node_modules",
-    "debugger": "npm-run-all --color -p watch debug"
+    "debugger": "npm-run-all --serial watch debug"
   },
   "devDependencies": {
     "@babel/node": "^7.12.1",

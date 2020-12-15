@@ -1,14 +1,15 @@
-const path = require('path');
+const path = require('path')
 
 exports.resolve = function resolve(dir) {
-  return path.join(__dirname, '..', dir);
-};
+  return path.join(__dirname, '..', dir)
+}
 
-exports.APP_PATH = exports.resolve('src');
-exports.DIST_PATH = exports.resolve('dist');
+exports.APP_PATH = exports.resolve('src')
+exports.DIST_PATH = exports.resolve('dist')
 
 exports.getWebpackResolveConfig = function (customAlias = {}) {
-  const appPath = exports.APP_PATH;
+  const appPath = exports.APP_PATH
+  console.log('🚀 ~ file: utils.js ~ line 12 ~ appPath', appPath)
   return {
     modules: [appPath, 'node_modules'],
     extensions: ['.js', '.json'],
@@ -16,5 +17,5 @@ exports.getWebpackResolveConfig = function (customAlias = {}) {
       '@': appPath,
       ...customAlias,
     },
-  };
-};
+  }
+}
