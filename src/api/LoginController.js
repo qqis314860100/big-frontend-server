@@ -1,7 +1,6 @@
 import moment from 'moment'
 import jsonwebtoken from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
-
 import SignRecord from '../model/SignRecord'
 import { send } from '../config/MainConfig'
 import { JWT_SECRET } from '../config'
