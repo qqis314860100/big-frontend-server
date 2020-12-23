@@ -1,24 +1,54 @@
 import moment from 'moment'
 import jsonwebtoken from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
+import { v4 as uuid } from 'uuid'
 import SignRecord from '../model/SignRecord'
 import { send } from '../config/MainConfig'
 import { JWT_SECRET } from '../config'
 import { checkCode } from '../common/utils'
 import User from '../model/User'
+import { getValue, setValue } from '../config/RedisConfig'
 
 class LoginController {
   constructor() {}
-  async forgetSendMail(ctx) {
-    try {
-      const { body } = ctx.request.query
-      const sendInfo = {
-        code: '1234',
-        expire: moment().add(30, 'm').format('YYYY-MM-DD HH:mm:ss'),
-        email: body.username,
-        user: body.name,
+  // 忘记密码，发送邮件
+  async forget(ctx) {
+    const { body } = ctx.request
+    const { sid, code } = body
+    const isValid = await checkCode(sid, code)
+    if (!isValid) {
+      ctx.body = {
+        code: 401,
+        msg: '验证码错误',
       }
-      const result = await send(sendInfo)
+      return
+    }
+    const user = await User.findOne({ username: body.username })
+    if (!user) {
+      ctx.body = {
+        code: 404,
+        msg: '请检查账号',
+      }
+      return
+    }
+    try {
+      const key = uuid()
+      console.log(
+        '🚀 ~ file: LoginController.js ~ line 28 ~ LoginController ~ forget ~ key',
+        key
+      )
+      setValue(
+        key,
+        jsonwebtoken.sign({ _id: user._id }, JWT_SECRET, { expiresIn: '30m' }),
+        30 * 60 * 1000
+      )
+      const result = await send({
+        type: 'reset',
+        data: { key: key, username: body.username },
+        expire: moment().add(30, 'minutes').format('YYYY-MM-DD HH:mm:ss'),
+        email: body.username,
+        user: user.name ? user.name : body.username,
+      })
       ctx.body = {
         code: 200,
         data: result,
@@ -138,6 +168,26 @@ class LoginController {
     ctx.body = {
       code: 500,
       msg,
+    }
+  }
+
+  async reset(ctx) {
+    const { body } = ctx.request
+    console.log(
+      '🚀 ~ file: LoginController.js ~ line 176 ~ LoginController ~ reset ~ body',
+      body
+    )
+    const sid = body.sid
+    const code = body.code
+    let msg = {}
+    const result = await checkCode(sid, code)
+    if (!result) {
+      msg.code = ['验证码已经失效，请重新获取！']
+      ctx.body = {
+        code: 500,
+        msg: msg,
+      }
+      return
     }
   }
 }

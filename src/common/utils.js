@@ -9,7 +9,6 @@ const getJWTPayload = (token) => {
 
 const checkCode = async (key, value) => {
   const redisData = await getValue(key)
-  console.log(redisData, key, value)
   if (redisData != null) {
     if (redisData.toLowerCase() === value.toLowerCase()) {
       return true
